@@ -4,8 +4,6 @@ return {
   dependencies = {
     "hrsh7th/cmp-buffer", -- source for text in buffer
     "hrsh7th/cmp-path", -- source for file system paths
-    "L3MON4D3/LuaSnip", -- snippet engine
-    "saadparwaiz1/cmp_luasnip", -- for autocompletion
     -- "rafamadriz/friendly-snippets", -- useful snippets
     -- "onsails/lspkind.nvim", -- vs-code like pictograms
     "hrsh7th/cmp-cmdline",
@@ -17,8 +15,6 @@ return {
   config = function()
 
     local cmp = require("cmp")
-
-    local luasnip = require("luasnip")
 
     local kind_icons = {
       article = "󰧮",
@@ -62,11 +58,6 @@ return {
         -- completeopt = "menuone,preview,noinsert,noselect",
         keyword_length = 1,
       },
-      snippet = { -- configure how nvim-cmp interacts with snippet engine
-        expand = function(args)
-          luasnip.lsp_expand(args.body)
-        end,
-      },
       mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
         ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
@@ -78,29 +69,15 @@ return {
         ["<CR>"] = cmp.mapping.confirm({ select = false }),
         -- supertab
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if luasnip.expandable() then
-            luasnip.expand()
-          elseif luasnip.locally_jumpable(1) then
-            luasnip.jump(1)
-          elseif cmp.visible() then
+          if cmp.visible() then
             cmp.select_next_item()
           else
             fallback()
           end
         end, { "i", "s" }),
-          -- BONEYARD
-          -- if luasnip.expand_or_locally_jumpable() then
-          --   luasnip.expand_or_jump()
-          -- elseif luasnip.locally_jumpable() then
-          --   luasnip.jump()
-          --   cmp.confirm()
-          -- elseif has_words_before() then
-          --  cmp.complete()
         ["<S-Tab>"] = cmp.mapping(function() -- could be: function(fallback) -- OR: function(delete-two-spaces????)
           if cmp.visible() then
             cmp.select_prev_item()
-          elseif luasnip.locally_jumpable(-1) then
-            luasnip.jump(-1)
           else
             -- fallback()
           end
@@ -115,7 +92,6 @@ return {
             -- vimtex = (vim_item.menu ~= nil and vim_item.menu or "[VimTex]"),
             -- vimtex = test_fn(vim_item.menu, entry.source.name),
             vimtex = vim_item.menu,
-            luasnip = "[Snippet]",
             nvim_lsp = "[LSP]",
             buffer = "[Buffer]",
             spell = "[Spell]",
@@ -130,7 +106,6 @@ return {
       -- sources for autocompletion
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "luasnip" }, -- snippets
         { name = "vimtex" },
         -- { name = "orgmode" },
         -- { name = "pandoc" },
