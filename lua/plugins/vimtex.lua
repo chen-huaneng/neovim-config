@@ -2,8 +2,17 @@ return {
   "lervag/vimtex",
   init = function()
     -- Viewer settings
-    -- vim.g.vimtex_view_method = 'zathura_simple'    -- For Wayland compatibility, avoid xdotool
-    -- vim.g.vimtex_context_pdf_viewer = 'okular'     -- External PDF viewer for the Vimtex menu
+    if vim.fn.has('win32') == 1 or (vim.fn.has('unix') == 1 and vim.env.WSLENV) then
+      if vim.fn.executable('sioyek.exe') == 1 then
+        vim.g.vimtex_view_method = 'sioyek'
+        vim.g.vimtex_view_sioyek_exe = 'sioyek.exe'
+        vim.g.vimtex_callback_progpath = 'wsl nvim'
+      elseif vim.fn.executable('mupdf.exe') == 1 then
+        vim.g.vimtex_view_general_viewer = 'mupdf.exe'
+      elseif vim.fn.executable('SumatraPDF.exe') == 1 then
+        vim.g.vimtex_view_general_viewer = 'SumatraPDF.exe'
+      end
+    end
 
     -- Formatting settings
     -- vim.g.vimtex_format_enabled = true             -- Enable formatting with latexindent
