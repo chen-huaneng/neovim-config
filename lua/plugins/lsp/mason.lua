@@ -1,9 +1,9 @@
 return {
   "williamboman/mason.nvim",
-  ft ={ "py", "html", "js", "ts", "lua" },
+  ft ={ "py", "cpp", "c", "tex", "bib", "h", "cc", "objc", "objcpp" }, -- Specify the supported file types
   dependencies = {
-    "williamboman/mason-lspconfig.nvim",
-    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "williamboman/mason-lspconfig.nvim", -- Used for managing the installation and configuration of LSP servers
+    "WhoIsSethDaniel/mason-tool-installer.nvim", -- Used for managing the installation of development tools (such as formatters, linters)
   },
 
   config = function()
@@ -20,9 +20,9 @@ return {
     mason.setup({
       ui = {
         icons = {
-          package_installed = "✓",
-          package_pending = "➜",
-          package_uninstalled = "✗",
+          package_installed = "✓",   -- installed packages
+          package_pending = "➜",     -- the package being installed
+          package_uninstalled = "✗", -- uninstalled package
         },
       },
     })
@@ -30,17 +30,8 @@ return {
     mason_lspconfig.setup({
       -- list of servers for mason to install
       ensure_installed = {
-        -- "html",
-        -- "emmet_ls",
-        "pyright",
-        "clangd", -- cpp
-        -- "tsserver",
-        -- "lua_ls",   -- seems to cause trouble
-        -- "cssls",
-        -- "tailwindcss",
-        -- "svelte"
-        -- "graphql",
-        -- "prismals",
+        "pyright", -- python LSP
+        "clangd",  -- cpp LSP
       },
       -- auto-install configured servers (with lspconfig)
       automatic_installation = true, -- not the same as ensure_installed
@@ -48,13 +39,12 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        -- "prettier", -- prettier formatter seems to be required
-        -- "stylua",   -- lua formatter
-        "isort",    -- python formatter
+        "clang-format", -- cpp formatter
         "black",    -- python formatter
         "pylint",   -- python linter
-        "clang-format", -- cpp formatter
-        -- "eslint_d", -- js linter
+        "flake8",     -- Python static analysis
+        "bandit",     -- Python security check
+        "cpplint",    -- cpp linter
       },
     })
   end,

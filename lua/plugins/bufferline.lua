@@ -8,17 +8,13 @@ return {
       options = {
         mode = "buffers",
         separator_style = "slant",
-        close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
+        close_command = "bdelete! %d", -- Use the Lua API to close the buffer
         diagnostics = false,           -- OR: | "nvim_lsp" 
         diagnostics_update_in_insert = false,
         show_tab_indicators = false,
         show_close_icon = false,
         -- numbers = "ordinal", -- Display buffer numbers as ordinal numbers
         sort_by = 'insert_after_current', -- OR: 'insert_at_end' | 'tabs' | 'extension' | 'relative_directory' | 'directory' | 'id' |
-        -- sort_by = function(buffer_a, buffer_b)
-        -- --   -- add custom logic
-        --   return buffer_a.ordinal < buffer_b.ordinal
-        -- end,
         offsets = {
           {
             filetype = "NvimTree",

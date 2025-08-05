@@ -1,11 +1,9 @@
 return {
   "lukas-reineke/indent-blankline.nvim",
-  -- dependencies = {},
   version = "*",
   event = { "BufReadPre", "BufNewFile" },
   config = function()
     require("ibl").setup({
-      -- indent_blankline_show_current_context = true,
       indent = {
         char = "│",
         tab_char = "│",

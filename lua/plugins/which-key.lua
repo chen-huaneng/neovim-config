@@ -1,6 +1,6 @@
 return {
   "folke/which-key.nvim",
-  commit = 'ca2d995c1f7d1ba4ce54a9936a6cdd8cfa594f2d',
+  commit = '*',
   event = "VeryLazy",
   init = function()
     vim.o.timeout = true
@@ -90,18 +90,17 @@ return {
       mode = { "n", "v" },
       d = { "<cmd>update! | bdelete!<CR>", "delete buffer" },
       e = { "<cmd>NvimTreeToggle<CR>", "explorer" },
-      -- h = { "<cmd>Alpha<CR>", "home" },
       i = { "<cmd>VimtexTocOpen<CR>", "index" },
       k = {
         function()
-          -- 初始化变量
-          local filename = vim.fn.expand("%:p")       -- 完整文件路径
-          local basename = vim.fn.expand("%:t:r")     -- 无扩展名的文件名
-          local filetype = vim.bo.filetype            -- 当前文件类型
+          -- Initialize variables
+          local filename = vim.fn.expand("%:p")       -- Complete file path
+          local basename = vim.fn.expand("%:t:r")     -- File names without extensions
+          local filetype = vim.bo.filetype            -- Current file type
           local deleted_files = {}
           local messages = {}
 
-          -- 清理编译产物（C/C++/Java）
+          -- Clean up the compiled products (c/cpp)
           if filetype == "c" or filetype == "cpp" then
             local targets = { ".exe", ".o" }
             for _, ext in ipairs(targets) do
@@ -112,22 +111,15 @@ return {
                 table.insert(deleted_files, file)
               end
             end
-          elseif filetype == "java" then
-            local class_file = basename .. ".class"
-            local full_path = vim.fn.fnamemodify(filename, ":h") .. "\\" .. class_file
-            if vim.fn.filereadable(full_path) == 1 then
-              os.remove(full_path)
-              table.insert(deleted_files, class_file)
-            end
           end
 
-          -- 条件执行 VimtexClean（仅限 LaTeX 文件）
+          -- Conditional execution of VimtexClean (LaTeX files only)
           if filetype == "tex" then
-            vim.cmd("VimtexClean")  -- 清理 LaTeX 辅助文件
+            vim.cmd("VimtexClean")  -- Clean up LaTeX auxiliary files
             table.insert(messages, "[LaTeX] already clean auxiliary files.")
           end
 
-          -- 生成反馈信息
+          -- Generate feedback information
           if #deleted_files > 0 then
             table.insert(messages, 1, "[Code] already clean compile files:\n" .. table.concat(deleted_files, "\n"))
           end
@@ -135,7 +127,7 @@ return {
             table.insert(messages, "[Code] no auxiliary file need to clean.")
           end
 
-          -- 显示通知
+          -- Show notification
           vim.notify(table.concat(messages, "\n\n"), "info", {
             title = "Clean Auxiliary",
             timeout = 3000
@@ -146,17 +138,17 @@ return {
       q = { "<cmd>wa! | qa!<CR>", "quit" },
       r = {
         function()
-          local filename = vim.fn.expand("%:p")       -- 完整文件路径
-          local basename = vim.fn.expand("%:t:r")     -- 无扩展名的文件名
+          local filename = vim.fn.expand("%:p")
+          local basename = vim.fn.expand("%:t:r")
           local filetype = vim.bo.filetype
           local cmd = ""
-          local quoted_filename = string.format('"%s"', filename)  -- 处理含空格的路径
+          local quoted_filename = string.format('"%s"', filename) -- Handle paths containing Spaces
 
-          -- 根据文件类型动态选择操作
+          -- Dynamically select operations based on file types
           if filetype == "tex" then
-            -- LaTeX 文件：触发 VimtexCompile 编译
+            -- LaTeX file: Triggers VimtexCompile compilation
             vim.cmd("VimtexCompile")
-            return  -- 结束函数，避免执行后续逻辑
+            return
           elseif filetype == "python" then
             cmd = "python " .. quoted_filename
           elseif filetype == "cpp" then
@@ -165,16 +157,12 @@ return {
           elseif filetype == "c" then
             local exe_name = basename .. ".exe"
             cmd = string.format("gcc %s -o %s && .\\%s", quoted_filename, exe_name, exe_name)
-          elseif filetype == "java" then
-            cmd = string.format("javac %s && java %s", quoted_filename, basename)
-          elseif filetype == "julia" then
-            cmd = "julia " .. quoted_filename 
           else
             vim.notify("unsupported file type: " .. filetype, "error", { title = "Run/Compile" })
             return
           end
 
-          -- 执行命令并显示输出
+          -- Execute the command and display the output
           local output = vim.fn.system(cmd)
           vim.api.nvim_echo({{output, "Normal"}}, false, {})
         end,
@@ -186,14 +174,29 @@ return {
       a = {
         name = "ACTIONS",
         c = { "<cmd>vert sb<CR>", "create split" },
-        h = { "<cmd>LocalHighlightToggle<CR>", "highlight" },
+        h = { "<cmd>LocalHighlightToggle<CR>", "local highlight toggle" },
         j = { "<cmd>clo<CR>", "drop split" },
         k = { "<cmd>clo<CR>", "kill split" },
         m = { "<cmd>on<CR>", "max split" },
         r = { "<cmd>VimtexErrors<CR>", "report errors" },
         w = { "<cmd>VimtexCountWords!<CR>", "word count" },
-        -- w = { "<cmd>TermExec cmd='pandoc %:p -o %:p:r.docx'<CR>" , "word"},
-        -- s = { "<cmd>lua function() require('cmp_vimtex.search').search_menu() end<CR>"           , "search citations" },
+      },
+      c = {
+        name = "Copilot",
+        d = {
+          function()
+            vim.cmd("Copilot disable")
+            vim.notify("[Copilot] Copilot disabled", vim.log.levels.INFO, { title = "Copilot Status" })
+          end,
+          "disable Copilot"
+        },
+        e = {
+          function()
+            vim.cmd("Copilot enable")
+            vim.notify("[Copilot] Copilot enabled", vim.log.levels.INFO, { title = "Copilot Status" })
+          end,
+          "enable Copilot"
+        },
       },
       f = {
         name = "FIND",
@@ -203,32 +206,22 @@ return {
         },
         f = { "<cmd>Telescope live_grep theme=ivy<CR>", "project" },
         g = { "<cmd>Telescope git_commits<CR>", "git history" },
-        -- g = { "<cmd>Telescope git_branches<CR>", "branches" },
         h = { "<cmd>Telescope help_tags<CR>", "help" },
         k = { "<cmd>Telescope keymaps<CR>", "keymaps" },
-        -- m = { "<cmd>Telescope man_pages<CR>", "man pages" },
         r = { "<cmd>Telescope registers<CR>", "registers" },
-        t = { "<cmd>Telescope colorscheme<CR>", "theme" },
         w = { "<cmd>lua SearchWordUnderCursor()<CR>", "word" },
-        -- c = { "<cmd>Telescope commands<CR>", "commands" },
-        -- r = { "<cmd>Telescope oldfiles<CR>", "recent" },
+        r = { "<cmd>Telescope oldfiles<CR>", "recent" },
       },
       g = {
         name = "GIT",
         b = { "<cmd>Telescope git_branches<CR>", "checkout branch" },
-        -- c = { "<cmd>Telescope git_commits<CR>", "commits" },
+        c = { "<cmd>Telescope git_commits<CR>", "commits" },
         d = { "<cmd>Gitsigns diffthis HEAD<CR>", "diff" },
-        g = { "<cmd>LazyGit<CR>", "lazygit" },
-        -- h = { "<cmd>Gitsigns hunk_history<CR>", "hunk history" },
         k = { "<cmd>Gitsigns prev_hunk<CR>", "prev hunk" },
         j = { "<cmd>Gitsigns next_hunk<CR>", "next hunk" },
         l = { "<cmd>Gitsigns blame_line<CR>", "line blame" },
         p = { "<cmd>Gitsigns preview_hunk<CR>", "preview hunk" },
         t = { "<cmd>Gitsigns toggle_current_line_blame<CR>", "toggle blame" },
-        -- o = { "<cmd>Telescope git_status<CR>", "open changed file" },
-        -- r = { "<cmd>lua require 'gitsigns'.reset_hunk()<CR>", "reset hunk" },
-        -- s = { "<cmd>lua require 'gitsigns'.stage_hunk()<CR>", "stage hunk" },
-        -- u = { "<cmd>lua require 'gitsigns'.undo_stage_hunk()<CR>", "unstage hunk" },
       },
     },
   },

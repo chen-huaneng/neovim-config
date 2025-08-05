@@ -11,7 +11,7 @@ return {
         normal_cur = false,
         normal_line = false,
         normal_cur_line = false,
-        visual = "<S-s>",
+        visual = "<S-s>", -- Press <S-s> and surround sign, like ( < " ' { [
         visual_line = false,
         delete = false,
         change = false,

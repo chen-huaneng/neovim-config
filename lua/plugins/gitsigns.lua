@@ -9,22 +9,7 @@ return {
         delete = { text = "▎" },
         topdelete = { text = "▎" },
         changedelete = { text = "▎" },
-        -- untracked    = { text = "┆" },
-        -- OR THIS BLOCK
-        -- add = { hl = "Title", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-        -- change = { hl = "Question", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-        -- delete = { hl = "Warning", text = "▎", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-        -- topdelete = { hl = "Warning", text = "▎", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-        -- changedelete = { hl = "Question", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-        -- OR THIS BLOCK
-        -- add = { hl = "DiagnosticSignOK", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-        -- change = { hl = "DiagnosticSignHint", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-        -- delete = { hl = "DiagnosticSignError", text = "▎", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-        -- -- delete = { hl = "DiagnosticSignError", text = "", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-        -- topdelete = { hl = "DiagnosticSignError", text = "▎", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-        -- -- topdelete = { hl = "DiagnosticSignError", text = "", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-        -- changedelete = { hl = "DiagnosticSignHint", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-        -- END
+        untracked    = { text = "┆" },
       },
       signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
       numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
@@ -42,9 +27,6 @@ return {
         delay = 1000,
         ignore_whitespace = false,
       },
-      -- current_line_blame_formatter_opts = {
-      --   relative_time = false,
-      -- },
       sign_priority = 6,
       update_debounce = 100,
       status_formatter = nil, -- Use default
@@ -57,9 +39,6 @@ return {
         row = 0,
         col = 1,
       },
-      -- yadm = {
-      --   enable = false,
-      -- },
     })
   end
 }

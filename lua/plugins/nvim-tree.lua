@@ -1,5 +1,6 @@
 return {
   "nvim-tree/nvim-tree.lua",
+  cmd = {"NvimTreeToggle", "NvimTreeFocus"},
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local nvimtree = require("nvim-tree")
@@ -40,12 +41,6 @@ return {
       keymap.set('n', 'v', api.node.open.vertical, opts('Vertical Split'))
       keymap.set('n', 'x', api.fs.cut, opts('Cut'))
       keymap.set('n', '<2-LeftMouse>', api.node.open.edit, opts('Open'))
-      -- keymap.set('n', '<BS>',  api.node.navigate.parent_close,        opts('Close Directory'))
-      -- keymap.set('n', '<CR>',  api.node.open.edit,                    opts('Open'))
-      -- keymap.set('n', '<C-r>', api.fs.rename_sub,                     opts('Rename: Omit Filename'))
-      -- keymap.set('n', 'j',     api.node.navigate.sibling.next,        opts('Next Sibling'))
-      -- keymap.set('n', 'k',     api.node.navigate.sibling.prev,        opts('Previous Sibling'))
-      -- keymap.set('n', 'e',     api.fs.rename_basename,                opts('Rename: Basename'))
     end
 
     -- configure nvim-tree

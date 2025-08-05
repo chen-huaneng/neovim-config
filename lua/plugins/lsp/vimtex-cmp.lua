@@ -1,5 +1,6 @@
 return {
   "micangl/cmp-vimtex",
+  ft = { "tex", "bib", "cls" }, -- Only loaded when .tex .bib .cls files are opened
   config = function()
     require('cmp_vimtex').setup({
       additional_information = {
@@ -11,17 +12,6 @@ return {
       },
       bibtex_parser = {
         enabled = true,
-      },
-      search = {
-        browser = "xdg-open",
-        default = "google_scholar",
-        search_engines = {
-          google_scholar = {
-            name = "Google Scholar",
-            get_url = require('cmp_vimtex').url_default_format("https://scholar.google.com/scholar?hl=en&q=%s"),
-          },
-          -- Other search engines.
-        },
       },
     })
   end,

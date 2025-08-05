@@ -1,5 +1,5 @@
--- 用于在 Neovim 中查找光标下的单词，具体功能如下：
+-- Used to find the word under the cursor
 function SearchWordUnderCursor()
-    local word = vim.fn.expand('<cword>') -- 获取光标下的单词
-    require('telescope.builtin').live_grep({ default_text = word }) -- 调用 Telescope 插件的 live_grep 功能
+    local word = vim.fn.expand('<cword>') -- get the word under the cursor
+    require('telescope.builtin').live_grep({ default_text = word }) -- invoke the live_grep function of the Telescope plugin
 end
