@@ -6,8 +6,7 @@ return {
     "hrsh7th/cmp-path", -- source for file system paths
     "L3MON4D3/LuaSnip", -- snippet engine
     "saadparwaiz1/cmp_luasnip", -- for autocompletion
-    "rafamadriz/friendly-snippets", -- useful snippets
-    "onsails/lspkind.nvim", -- vs-code like pictograms
+    -- "onsails/lspkind.nvim", -- vs-code like pictograms
     "hrsh7th/cmp-cmdline", -- command-line mode completion
     "petertriho/cmp-git", -- git command completion
     "f3fora/cmp-spell", -- spelling check completion
@@ -79,28 +78,21 @@ return {
 -----------------
 
       mapping = cmp.mapping.preset.insert({
-        ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }), -- The previous completion item
-        ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }), -- The next completion item
-        ["<C-b>"] = cmp.mapping.scroll_docs(-4), -- Scroll up to complete the window
-        ["<C-f>"] = cmp.mapping.scroll_docs(4), -- Scroll down to complete the window
-        -- ["<C-n>"] = cmp.mapping.complete(), -- show completion suggestions
-        -- ["<C-h>"] = cmp.mapping.abort(), -- close completion window
-        -- ["<C-l>"] = cmp.mapping.confirm({ select = false }),
-        ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Press Enter to confirm completion (no forced selection)
+        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Press Enter to confirm completion (no forced selection)
 
         -- supertab
         ["<Tab>"] = cmp.mapping(function(fallback)
-          if luasnip.expandable() then
-            luasnip.expand()
+          if cmp.visible() then
+            cmp.select_next_item()
           elseif luasnip.locally_jumpable(1) then
             luasnip.jump(1)
-          elseif cmp.visible() then
-            cmp.select_next_item()
+          elseif luasnip.expandable() then
+            luasnip.expand()
           else
             fallback()
           end
         end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function() -- could be: function(fallback) -- OR: function(delete-two-spaces????)
+        ["<S-Tab>"] = cmp.mapping(function()
           if cmp.visible() then
             cmp.select_prev_item()
           elseif luasnip.locally_jumpable(-1) then
