@@ -1,6 +1,6 @@
 return {
   "williamboman/mason.nvim",
-  ft ={ "py", "cpp", "c", "tex", "bib", "h", "cc", "objc", "objcpp" }, -- Specify the supported file types
+  ft ={ "py", "cpp", "c", "tex", "bib", "h", "cc", "objc", "objcpp", "md" }, -- Specify the supported file types
   dependencies = {
     "williamboman/mason-lspconfig.nvim", -- Used for managing the installation and configuration of LSP servers
     "WhoIsSethDaniel/mason-tool-installer.nvim", -- Used for managing the installation of development tools (such as formatters, linters)
@@ -32,6 +32,7 @@ return {
       ensure_installed = {
         "pyright", -- python LSP
         "clangd",  -- cpp LSP
+        "codebook", -- markdown LSP
       },
       -- auto-install configured servers (with lspconfig)
       automatic_installation = true, -- not the same as ensure_installed
@@ -45,6 +46,8 @@ return {
         "flake8",     -- Python static analysis
         "bandit",     -- Python security check
         "cpplint",    -- cpp linter
+        "markdownlint", -- markdown linter
+        "doctoc", -- markdown formatter
       },
     })
   end,
